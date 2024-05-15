@@ -4,9 +4,33 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title>Sequence Order</title>
+    <title>Sequence Order</title>     
+   <link href="Content/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.7/css/dataTables.dataTables.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="Scripts/bootstrap.min.js"></script>
-    <link href="Content/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://cdn.datatables.net/2.0.7/js/dataTables.js"></script>
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                url: 'CompanyService.asmx/GetCompanyDetail',
+                method: 'Post',
+                dataType: 'json',
+                success: function (data) {
+                    $('#CompanyTbl').DataTable({
+                        data: data,
+                        columns: [
+                            {'data': 'Id'},
+                            { 'data': 'CompanyId'},
+                            { 'data': 'Number' },
+                            { 'data': 'InsDT'}                                          
+                        ]
+                    });
+                }
+            })            
+        });
+    </script>
+
 </head>
 <body>
     <form id="form1" runat="server">
@@ -45,6 +69,26 @@
                 </div>
             </div>
         </div>
+        <br />
+        <br />
+        <br />
+        <section class="container" id="Section">
+        <div class="row">
+            <table id="CompanyTbl">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>CompanyId</th>
+                        <th>Number</th>
+                        <th>InsDT</th>
+                    </tr>
+                   
+                </thead>
+
+            </table>
+
+        </div>
+            </section>
     </form>
 </body>
 </html>
