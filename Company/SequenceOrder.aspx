@@ -10,7 +10,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="Scripts/bootstrap.min.js"></script>
     <script src="https://cdn.datatables.net/2.0.7/js/dataTables.js"></script>
-    <script>
+    <script>-
         $(document).ready(function () {
             $.ajax({
                 url: 'CompanyService.asmx/GetCompanyDetail',
@@ -20,10 +20,25 @@
                     $('#CompanyTbl').DataTable({
                         data: data,
                         columns: [
-                            {'data': 'Id'},
-                            { 'data': 'CompanyId'},
+                            { 'data': 'Id' },
+                            { 'data': 'CompanyId' },
                             { 'data': 'Number' },
-                            { 'data': 'InsDT'}                                          
+                            {
+                                'data': 'InsDT',
+                                'render': function (jsonDate) {
+                                    if (jsonDate) {
+                                        var date = new Date(parseInt(jsonDate.replace(/\/Date\((-?\d+)\)\//, '$1')));
+                                        var day = date.getDate();
+                                        var month = date.getMonth() + 1;
+                                        var year = date.getFullYear();
+                                        return day + "/" + month + "/" + year;
+                                    }
+                                    else {
+                                        return "";
+                                    }
+                                }
+                            },                                          
+                                                                   
                         ]
                     });
                 }
@@ -34,6 +49,7 @@
 </head>
 <body>
     <form id="form1" runat="server">
+
         <div class="container">
             <div class="clearfix">
                 &nbsp;
@@ -73,14 +89,15 @@
         <br />
         <br />
         <section class="container" id="Section">
-        <div class="row">
+        <div style="border:1px solid black; padding:5px">
             <table id="CompanyTbl">
-                <thead>
+                <thead style="background-color :lightgray;">
                     <tr>
                         <th>Id</th>
                         <th>CompanyId</th>
                         <th>Number</th>
                         <th>InsDT</th>
+                        
                     </tr>
                    
                 </thead>
